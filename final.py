@@ -1,10 +1,13 @@
-from __future__ import print_function
+'''
+
+'''
 import pickle
 import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
+# Highest auth scope so that we can create and edit files
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
 creds = None
@@ -12,6 +15,7 @@ creds = None
 if os.path.exists('token.pickle'):
     with open('token.pickle', 'rb') as token:
         creds = pickle.load(token)
+
 # If there are no (valid) credentials available, let the user log in.
 if not creds or not creds.valid:
     if creds and creds.expired and creds.refresh_token:
@@ -31,6 +35,7 @@ def replicate(folderid, destid, driveid):
        q="'"+folderid+"' in parents",
        fields="nextPageToken, files(id, name, mimeType)").execute()
     items = results.get('files', [])
+    parentfolder = service.files().create(body=file_metadata, fields='id', supportsAllDrives=True).execute()
     
     if not items:
         print('No files found.')
@@ -51,8 +56,8 @@ def replicate(folderid, destid, driveid):
                 replicate(item['id'], file['id'], driveid)
 
 if __name__ == '__main__':
-    folderid = raw_input("enter folderid: ")
-    destid = raw_input("destid: ")
-    driveid = raw_input("driveid: ")
+    folderid = input("enter folderid: ")
+    destid = input("destid: ")
+    driveid = input("driveid: ")
 
     replicate(folderid, destid, driveid)
