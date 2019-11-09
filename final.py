@@ -35,7 +35,17 @@ def replicate(folderid, destid, driveid):
        q="'"+folderid+"' in parents",
        fields="nextPageToken, files(id, name, mimeType)").execute()
     items = results.get('files', [])
+    parentitem = service.files().get(fileId=folderid)
+
+    parent_metadata = {
+            'name': parentitem['name'],
+            'driveId': driveid,
+            'parents': [destid],
+            'mimeType': parentitem['mimeType']
+            }
+
     parentfolder = service.files().create(body=file_metadata, fields='id', supportsAllDrives=True).execute()
+    destid = parentfolder['id']
     
     if not items:
         print('No files found.')
