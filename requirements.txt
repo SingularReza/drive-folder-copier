@@ -4,7 +4,7 @@ beautifulsoup4==4.8.0
 cachetools==3.1.1
 certifi==2019.6.16
 chardet==3.0.4
-cryptography==2.1.4
+cryptography==3.2
 Django==1.11.20
 enum34==1.1.6
 google-api-python-client==1.7.11
