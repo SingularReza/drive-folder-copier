@@ -5,6 +5,8 @@ Google drive doesn't allow you to copy folders from your main drive to a team dr
 ## How to Use
 * pip install -r requirements.txt (needs python version > 2.6)
 
+* Place your GDrive API credentials or use the included hacky quickstart one
+
 *  This script takes 3 inputs:
 
         * folderid - The id of the folder whose contents you want to copy over

@@ -35,7 +35,8 @@ def replicate(folderid, destid, driveid):
        q="'"+folderid+"' in parents",
        fields="nextPageToken, files(id, name, mimeType)").execute()
     items = results.get('files', [])
-    parentitem = service.files().get(fileId=folderid)
+    parentitem = service.files().get(fileId=folderid).execute()
+    print(parentitem)
 
     parent_metadata = {
             'name': parentitem['name'],
@@ -44,7 +45,7 @@ def replicate(folderid, destid, driveid):
             'mimeType': parentitem['mimeType']
             }
 
-    parentfolder = service.files().create(body=file_metadata, fields='id', supportsAllDrives=True).execute()
+    parentfolder = service.files().create(body=parent_metadata, fields='id', supportsAllDrives=True).execute()
     destid = parentfolder['id']
     
     if not items:
